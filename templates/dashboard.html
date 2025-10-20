@@ -25,7 +25,7 @@
     th, td { padding: 10px; border-bottom: 1px solid #ddd; }
     th { background: #007bff; color: white; }
     tr:hover { background-color: #f1f1f1; }
-    canvas { max-width: 400px; margin-top: 30px; }
+    canvas { max-width: 500px; margin-top: 30px; }
     a { display: inline-block; margin-top: 20px; color: #007bff; text-decoration: none; }
   </style>
 </head>
@@ -57,13 +57,9 @@
   <a href="/">⬅ Back to Classifier</a>
 
   <script>
-    // Safely pass Python dicts into JS
     const labels = {{ class_counts.keys() | list | tojson }};
     const values = {{ class_counts.values() | list | tojson }};
-    const colors = [
-      '#007bff', '#28a745', '#ffc107', '#dc3545',
-      '#17a2b8', '#6f42c1', '#fd7e14', '#20c997'
-    ];
+    const colors = ['#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8', '#6f42c1', '#fd7e14', '#20c997'];
 
     const ctx = document.getElementById('classChart').getContext('2d');
     new Chart(ctx, {

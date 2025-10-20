@@ -58,4 +58,25 @@ async function predict() {
     body: JSON.stringify(prediction),
   });
 }
- 
+
+
+async function predict() {
+  const prediction = await model.predict(webcam.canvas);
+  let top = prediction[0];
+  for (let i = 1; i < prediction.length; i++) {
+    if (prediction[i].probability > top.probability) top = prediction[i];
+  }
+
+  // Display prediction results
+  labelContainer.innerHTML = top.className + ": " + (top.probability * 100).toFixed(2) + "%";
+
+  // Send log to Flask backend
+  fetch("/log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      class: top.className,
+      confidence: top.probability
+    })
+  });
+}
