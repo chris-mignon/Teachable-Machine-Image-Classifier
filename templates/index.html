@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teachable Machine Classifier</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      text-align: center;
+      background: #f8f9fa;
+      color: #333;
+      padding: 20px;
+    }
+    h1 { color: #0056b3; }
+    #image-preview {
+      max-width: 300px;
+      margin-top: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .progress {
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 300px;
+      margin: 8px auto;
+    }
+    .progress-bar {
+      height: 20px;
+      background-color: #007bff;
+      text-align: right;
+      padding-right: 6px;
+      color: white;
+      font-size: 0.9em;
+      border-radius: 10px;
+      transition: width 0.5s ease-in-out;
+    }
+    input[type="file"], button {
+      margin-top: 10px;
+      padding: 10px;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teachable Machine Image Model</h1>
+  <p>Upload an image to classify it using your trained model.</p>
+
+  <input type="file" accept="image/*" id="image-input" onchange="loadImage(event)" />
+  <br />
+  <img id="image-preview" />
+  <br />
+  <button onclick="predict()">Classify Image</button>
+
+  <div id="label-container"></div>
+</body>
+</html>
