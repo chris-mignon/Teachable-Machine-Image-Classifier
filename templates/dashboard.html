@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Teachable Machine Logs</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      text-align: center;
+      background: #f4f6f8;
+      color: #333;
+      padding: 20px;
+    }
+    h1 { color: #0056b3; }
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    th, td { padding: 10px; border-bottom: 1px solid #ddd; }
+    th { background: #007bff; color: white; }
+    tr:hover { background-color: #f1f1f1; }
+    canvas { max-width: 400px; margin-top: 30px; }
+    a { display: inline-block; margin-top: 20px; color: #007bff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>📊 Classification Dashboard</h1>
+
+  <canvas id="classChart"></canvas>
+
+  <h2>Recent Predictions</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Top Class</th>
+        <th>Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in logs %}
+      <tr>
+        <td>{{ entry.time }}</td>
+        <td>{{ entry.class }}</td>
+        <td>{{ entry.confidence }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="/">⬅ Back to Classifier</a>
+
+  <script>
+    // Safely pass Python dicts into JS
+    const labels = {{ class_counts.keys() | list | tojson }};
+    const values = {{ class_counts.values() | list | tojson }};
+    const colors = [
+      '#007bff', '#28a745', '#ffc107', '#dc3545',
+      '#17a2b8', '#6f42c1', '#fd7e14', '#20c997'
+    ];
+
+    const ctx = document.getElementById('classChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colors.slice(0, labels.length),
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Class Prediction Frequency' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
